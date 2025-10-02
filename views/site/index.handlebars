@@ -1,0 +1,279 @@
+<!--==========================
+    HERO SECTION Section
+============================-->
+<header id="hero">
+  <div class="container">
+    {{#if sessionFlash.message}}
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <div
+            class="{{sessionFlash.type}} text-center"
+            style="margin-top: 20px;"
+          >
+            {{sessionFlash.message}}
+          </div>
+        </div>
+      </div>
+    {{/if}}
+    <div class="intro-text">
+      <h1 class="text-white">NODE BLOG SİTESİ</h1>
+      <p>Modern web teknolojileri ile geliştirilmiş blog platformu. Node.js,
+        Express ve MongoDB kullanarak oluşturulmuştur.</p>
+      <a href="/blog" class="main-btn">Blog'u Keşfet!</a>
+    </div>
+  </div>
+</header>
+
+<!--==========================
+    WHO WE ARE Section
+============================-->
+
+<section id="about" class="md-padding">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4 offset-md-4">
+        <div class="section-header">
+          <h2 class="title">Özellikler</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row text-center">
+      <div class="col-md-4">
+        <div class="about">
+          <i class="fas fa-code"></i>
+          <h3>Modern Teknoloji</h3>
+          <p>Node.js, Express ve MongoDB ile geliştirilmiş modern ve hızlı bir
+            blog platformu.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="about">
+          <i class="fas fa-mobile-alt"></i>
+          <h3>Responsive Tasarım</h3>
+          <p>Tüm cihazlarda mükemmel görünüm sağlayan responsive ve kullanıcı
+            dostu arayüz.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="about">
+          <i class="fas fa-search"></i>
+          <h3>Gelişmiş Arama</h3>
+          <p>Güçlü arama ve filtreleme özellikleri ile aradığınız içeriği
+            kolayca bulun.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="statement" class="md-padding bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h4 class="text-black lead">
+          Teknoloji dünyasındaki en son gelişmeleri takip edin.<br />
+          Yazılım, web geliştirme ve daha fazlası hakkında kaliteli içerikler.
+        </h4>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section id="features" class="md-padding">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4 offset-md-4">
+        <div class="section-header">
+          <h2 class="title">Neden Biz?</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <p class="lead">Blog platformumuz, modern web teknolojileri ile
+          geliştirilmiş ve kullanıcı deneyimini ön planda tutan özelliklere
+          sahiptir.</p>
+        <div class="feature">
+          <div class="row">
+            <div class="col-md-2 text-right">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <div class="col-md-10">
+              <h5>ÖZELLİK 01</h5>
+              <h4>Hızlı ve Güvenli</h4>
+              <p>Node.js'in gücü ile yüksek performans ve MongoDB ile güvenli
+                veri saklama.</p>
+            </div>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="row">
+            <div class="col-md-2 text-right">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="col-md-10">
+              <h5>ÖZELLİK 02</h5>
+              <h4>Kullanıcı Dostu</h4>
+              <p>Sezgisel arayüz ve kolay içerik yönetimi ile herkes için
+                uygundur.</p>
+            </div>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="row">
+            <div class="col-md-2 text-right">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="col-md-10">
+              <h5>ÖZELLİK 03</h5>
+              <h4>Gelişmiş Analitik</h4>
+              <p>Görüntülenme sayıları, popüler içerikler ve detaylı
+                istatistikler.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="features-slide" class="owl-carousel owl-theme">
+          <img src="img/about1.jpg" class="img-fluid" />
+          <img src="img/about2.jpg" class="img-fluid" />
+          <img src="img/about1.jpg" class="img-fluid" />
+          <img src="img/about2.jpg" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--==========================
+    SON POSTLAR Section
+============================-->
+{{#if recentPosts}}
+  <section id="recent-posts" class="md-padding bg-light">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-4 offset-md-4">
+          <div class="section-header">
+            <h2 class="title">Son Postlar</h2>
+            <p>En son yayınlanan blog yazılarımız</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        {{#each recentPosts}}
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <img
+                src="{{this.post_image}}"
+                class="card-img-top"
+                alt="{{this.title}}"
+                style="height: 200px; object-fit: cover;"
+              />
+              <div class="card-body d-flex flex-column">
+                <div class="mb-2">
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: {{this.category.color}}"
+                  >
+                    {{this.category.name}}
+                  </span>
+                </div>
+                <h5 class="card-title">{{truncateText this.title 50}}</h5>
+                <p class="card-text">{{#if
+                    this.summary
+                  }}{{this.summary}}{{else}}{{truncateText
+                      this.content
+                      100
+                    }}{{/if}}</p>
+                <div class="mt-auto">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-2"
+                  >
+                    <small class="text-muted">
+                      <i class="fas fa-user"></i>
+                      {{this.author.username}}
+                    </small>
+                    <small class="text-muted">
+                      <i class="fas fa-eye"></i>
+                      {{this.views}}
+                    </small>
+                  </div>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <small class="text-muted">{{generateDate
+                        this.createdAt
+                        "DD/MM/YYYY"
+                      }}</small>
+                    <a
+                      href="/posts/{{this._id}}"
+                      class="btn btn-primary btn-sm"
+                    >Oku</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+      <div class="text-center mt-4">
+        <a href="/blog" class="btn btn-outline-primary btn-lg">Tüm Postları
+          Görüntüle</a>
+      </div>
+    </div>
+  </section>
+{{/if}}
+
+<!--==========================
+    KATEGORİLER Section
+============================-->
+{{#if categories}}
+  <section id="categories" class="md-padding">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-4 offset-md-4">
+          <div class="section-header">
+            <h2 class="title">Kategoriler</h2>
+            <p>Blog yazılarımızın kategorileri</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        {{#each categories}}
+          <div class="col-md-4 mb-3">
+            <a href="/category/{{this.slug}}" class="text-decoration-none">
+              <div
+                class="card text-center h-100"
+                style="border-color: {{this.color}}"
+              >
+                <div class="card-body">
+                  <i
+                    class="fas fa-tag fa-3x mb-3"
+                    style="color: {{this.color}}"
+                  ></i>
+                  <h5
+                    class="card-title"
+                    style="color: {{this.color}}"
+                  >{{this.name}}</h5>
+                  {{#if this.description}}
+                    <p class="card-text text-muted">{{this.description}}</p>
+                  {{/if}}
+                  {{#if this.postCount}}
+                    <span
+                      class="badge badge-pill"
+                      style="background-color: {{this.color}}"
+                    >
+                      {{this.postCount}}
+                      post
+                    </span>
+                  {{/if}}
+                </div>
+              </div>
+            </a>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  </section>
+{{/if}}

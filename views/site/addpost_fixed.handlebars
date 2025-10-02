@@ -1,0 +1,174 @@
+<!--==========================
+    INSIDE HERO SECTION Section
+============================-->
+<section class="page-image page-image-contact md-padding">
+  <h1 class="text-white text-center">YENİ POST EKLE</h1>
+</section>
+
+<!--==========================
+    Add Post Section
+============================-->
+<section id="addpost" class="md-padding">
+  <div class="container">
+
+    <div class="row text-center mb-4">
+      <div class="col-md-8 offset-md-2">
+        <div class="section-header">
+          <h2 class="title">Yeni Blog Yazısı Oluştur</h2>
+          <p class="text-muted">Fikirlerinizi ve bilgilerinizi paylaşın</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        {{#if sessionFlash.message}}
+          <div class="alert {{sessionFlash.type}} alert-dismissible fade show" role="alert">
+            {{sessionFlash.message}}
+            <button type="button" class="close" data-dismiss="alert">
+              <span>&times;</span>
+            </button>
+          </div>
+        {{/if}}
+
+        <!-- Debug Info -->
+        <div class="alert alert-info">
+          <strong>Debug Info:</strong><br>
+          Kategoriler: {{categories.length}} adet<br>
+          <div style="max-height: 200px; overflow-y: auto;">
+            <pre>{{categoriesJson}}</pre>
+          </div>
+        </div>
+
+        <div class="card shadow">
+          <div class="card-body p-4">
+            <form action="/posts/create" method="POST" enctype="multipart/form-data" id="addPostForm">
+              
+              <!-- Başlık -->
+              <div class="form-group">
+                <label for="title">
+                  <i class="fas fa-heading"></i> Başlık *
+                </label>
+                <input
+                  class="form-control"
+                  id="title"
+                  name="title"
+                  type="text"
+                  placeholder="Post başlığını girin"
+                  required
+                  minlength="5"
+                />
+                <small class="form-text text-muted">Minimum 5 karakter</small>
+              </div>
+
+              <!-- İçerik -->
+              <div class="form-group">
+                <label for="content">
+                  <i class="fas fa-align-left"></i> İçerik *
+                </label>
+                <textarea
+                  class="form-control"
+                  id="content"
+                  name="content"
+                  placeholder="Post içeriğini buraya yazın..."
+                  rows="10"
+                  required
+                  minlength="50"
+                ></textarea>
+                <small class="form-text text-muted">Minimum 50 karakter</small>
+              </div>
+
+              <!-- Kategori -->
+              <div class="form-group">
+                <label for="category">
+                  <i class="fas fa-tags"></i> Kategori *
+                </label>
+                <select class="form-control" id="category" name="category" required>
+                  <option value="">-- Kategori Seçin --</option>
+                  <option value="68de56b056e1e696fdaffb10">Mobil</option>
+                  <option value="68de56b056e1e696fdaffb0e">Yazılım</option>
+                  <option value="68de56b056e1e696fdaffb0f">Web Tasarım</option>
+                  <option value="68de56b056e1e696fdaffb11">Veritabanı</option>
+                  <option value="68de597c2d4334226a2f41d6">Yapay Zeka</option>
+                </select>
+                <small class="form-text text-muted">Bir kategori seçin</small>
+              </div>
+
+              <!-- Görsel -->
+              <div class="form-group">
+                <label for="post_image">
+                  <i class="fas fa-image"></i> Post Görseli *
+                </label>
+                <input
+                  class="form-control-file"
+                  id="post_image"
+                  name="post_image"
+                  type="file"
+                  accept="image/*"
+                  required
+                />
+                <small class="form-text text-muted">JPG, PNG veya GIF formatında görsel yükleyin (Max: 5MB)</small>
+              </div>
+
+              <!-- Butonlar -->
+              <div class="text-center mt-4">
+                <button class="btn btn-primary btn-lg" type="submit" id="submitBtn">
+                  <i class="fas fa-paper-plane"></i> Post Yayınla
+                </button>
+                <a href="/blog" class="btn btn-secondary btn-lg ml-2">
+                  <i class="fas fa-times"></i> İptal
+                </a>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  document.getElementById('addPostForm').addEventListener('submit', function(e) {
+    const title = document.getElementById('title').value.trim();
+    const content = document.getElementById('content').value.trim();
+    const category = document.getElementById('category').value;
+    const image = document.getElementById('post_image').files[0];
+    
+    console.log('Form submit - Values:');
+    console.log('- title:', title);
+    console.log('- content:', content);
+    console.log('- category:', category);
+    console.log('- image:', image ? image.name : 'No file');
+    
+    if (!title || title.length < 5) {
+      alert('Başlık en az 5 karakter olmalıdır!');
+      e.preventDefault();
+      return;
+    }
+    
+    if (!content || content.length < 50) {
+      alert('İçerik en az 50 karakter olmalıdır!');
+      e.preventDefault();
+      return;
+    }
+    
+    if (!category) {
+      alert('Lütfen bir kategori seçin!');
+      e.preventDefault();
+      return;
+    }
+    
+    if (!image) {
+      alert('Lütfen bir görsel seçin!');
+      e.preventDefault();
+      return;
+    }
+    
+    // Form geçerli, loading state
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Yükleniyor...';
+  });
+</script>

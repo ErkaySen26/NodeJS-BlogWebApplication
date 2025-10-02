@@ -1,0 +1,222 @@
+<!-- ============================
+     INSIDE HERO SECTION Section
+     ============================ -->
+<section class="page-image page-image-about md-padding">
+  <h1 class="text-white text-center">ADMIN PANEL</h1>
+</section>
+
+<!-- ============================
+     ADMIN DASHBOARD Section
+     ============================ -->
+<section id="admin-dashboard" class="md-padding">
+  <div class="container">
+    {{>admin-nav}}
+
+    <!-- İstatistik Kartları -->
+    <div class="row mt-5 mb-4">
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                  Toplam Post
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  {{stats.totalPosts}}
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-newspaper fa-2x text-primary"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                  Yayınlanan
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  {{stats.publishedPosts}}
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-check-circle fa-2x text-success"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                  Taslak
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  {{stats.draftPosts}}
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-edit fa-2x text-warning"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                  Kategori
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  {{stats.totalCategories}}
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-tags fa-2x text-info"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .border-left-primary {
+        border-left: 4px solid #007bff !important;
+      }
+      .border-left-success {
+        border-left: 4px solid #28a745 !important;
+      }
+      .border-left-warning {
+        border-left: 4px solid #ffc107 !important;
+      }
+      .border-left-info {
+        border-left: 4px solid #17a2b8 !important;
+      }
+      .text-xs {
+        font-size: 0.7rem;
+      }
+      .text-gray-800 {
+        color: #5a5c69 !important;
+      }
+    </style>
+
+    <!-- Son Postlar ve Popüler Postlar -->
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-clock"></i> Son Eklenen Postlar</h5>
+          </div>
+          <div class="card-body">
+            {{#if recentPosts}}
+              <div class="list-group">
+                {{#each recentPosts}}
+                <div class="list-group-item">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">{{truncateText this.title 50}}</h6>
+                    <small>{{generateDate this.createdAt "DD/MM/YYYY"}}</small>
+                  </div>
+                  <p class="mb-1">
+                    <span class="badge badge-primary">{{this.category.name}}</span>
+                    <span class="badge badge-secondary">{{this.author.username}}</span>
+                  </p>
+                </div>
+                {{/each}}
+              </div>
+            {{else}}
+              <p class="text-muted">Henüz post bulunmuyor.</p>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-fire"></i> En Popüler Postlar</h5>
+          </div>
+          <div class="card-body">
+            {{#if popularPosts}}
+              <div class="list-group">
+                {{#each popularPosts}}
+                <div class="list-group-item">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">{{truncateText this.title 50}}</h6>
+                    <small><i class="fas fa-eye"></i> {{this.views}}</small>
+                  </div>
+                  <p class="mb-1">
+                    <span class="badge badge-primary">{{this.category.name}}</span>
+                    <span class="badge badge-secondary">{{this.author.username}}</span>
+                  </p>
+                </div>
+                {{/each}}
+              </div>
+            {{else}}
+              <p class="text-muted">Henüz post bulunmuyor.</p>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hızlı Aksiyonlar -->
+    <div class="row mt-4 mb-5">
+      <div class="col-12">
+        <div class="card shadow">
+          <div class="card-header bg-gradient-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-bolt"></i> Hızlı Aksiyonlar</h5>
+          </div>
+          <div class="card-body text-center py-4">
+            <a href="/posts/new" class="btn btn-lg btn-primary m-2 shadow-sm">
+              <i class="fas fa-plus-circle"></i><br>
+              <span class="d-block mt-2">Yeni Post</span>
+            </a>
+            <a href="/admin/posts" class="btn btn-lg btn-info m-2 shadow-sm">
+              <i class="fas fa-list-alt"></i><br>
+              <span class="d-block mt-2">Postları Yönet</span>
+            </a>
+            <a href="/admin/categories" class="btn btn-lg btn-success m-2 shadow-sm">
+              <i class="fas fa-tags"></i><br>
+              <span class="d-block mt-2">Kategoriler</span>
+            </a>
+            <a href="/blog" class="btn btn-lg btn-secondary m-2 shadow-sm">
+              <i class="fas fa-globe"></i><br>
+              <span class="d-block mt-2">Siteyi Görüntüle</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .btn-lg {
+        min-width: 150px;
+        min-height: 120px;
+        font-size: 1rem;
+      }
+      .btn-lg i {
+        font-size: 2.5rem;
+      }
+    </style>
+  </div>
+</section>
+

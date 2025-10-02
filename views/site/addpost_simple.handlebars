@@ -1,0 +1,117 @@
+<!--==========================
+    INSIDE HERO SECTION Section
+============================-->
+<section class="page-image page-image-contact md-padding">
+  <h1 class="text-white text-center">YENİ POST EKLE</h1>
+</section>
+
+<!--==========================
+    Add Post Section
+============================-->
+<section id="addpost" class="md-padding">
+  <div class="container">
+
+    <div class="row text-center mb-4">
+      <div class="col-md-8 offset-md-2">
+        <div class="section-header">
+          <h2 class="title">Yeni Blog Yazısı Oluştur</h2>
+          <p class="text-muted">Fikirlerinizi ve bilgilerinizi paylaşın</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        {{#if sessionFlash.message}}
+          <div class="alert {{sessionFlash.type}} alert-dismissible fade show" role="alert">
+            {{sessionFlash.message}}
+            <button type="button" class="close" data-dismiss="alert">
+              <span>&times;</span>
+            </button>
+          </div>
+        {{/if}}
+
+        <!-- Debug Info -->
+        <div class="alert alert-info">
+          <strong>Debug Info:</strong><br>
+          Kategoriler: {{categories.length}} adet<br>
+          {{#each categories}}
+            - {{this.name}} (ID: {{this._id}})<br>
+          {{/each}}
+        </div>
+
+        <div class="card shadow">
+          <div class="card-body p-4">
+            <form action="/posts/create" method="POST" enctype="multipart/form-data" id="addPostForm">
+              <div class="form-group">
+                <label for="title">Başlık *</label>
+                <input
+                  class="form-control"
+                  id="title"
+                  name="title"
+                  type="text"
+                  placeholder="Post başlığını girin"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="content">İçerik *</label>
+                <textarea
+                  class="form-control"
+                  id="content"
+                  name="content"
+                  placeholder="Post içeriğini buraya yazın..."
+                  rows="8"
+                  required
+                ></textarea>
+                <small class="form-text text-muted">Minimum 50 karakter</small>
+              </div>
+
+              <div class="form-group">
+                <label for="category">Kategori *</label>
+                <select class="form-control" id="category" name="category" required>
+                  <option value="">-- Kategori Seçin --</option>
+                  {{#each categories}}
+                    <option value="{{this._id}}">{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="post_image">Post Görseli *</label>
+                <input
+                  class="form-control-file"
+                  id="post_image"
+                  name="post_image"
+                  type="file"
+                  accept="image/*"
+                  required
+                />
+                <small class="form-text text-muted">JPG, PNG veya GIF formatında görsel yükleyin (Max: 5MB)</small>
+              </div>
+
+              <div class="text-center mt-4">
+                <button class="btn btn-primary btn-lg" type="submit" id="submitBtn">
+                  Post Yayınla
+                </button>
+                <a href="/blog" class="btn btn-secondary btn-lg ml-2">
+                  İptal
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  document.getElementById('addPostForm').addEventListener('submit', function() {
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = 'Yükleniyor...';
+  });
+</script>

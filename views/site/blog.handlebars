@@ -1,0 +1,267 @@
+<!--==========================
+    INSIDE HERO SECTION Section
+============================-->
+<section class="page-image page-image-blog md-padding">
+  <h1 class="text-white text-center">
+    {{#if currentCategory}}
+      {{currentCategory.name}} Kategorisi
+    {{else if query.search}}
+      "{{query.search}}" Arama Sonuçları
+    {{else}}
+      BLOG
+    {{/if}}
+  </h1>
+</section>
+
+<!--==========================
+    Blog Section
+============================-->
+<section id="blog" class="md-padding">
+  <div class="container">
+
+    <!-- Arama ve Filtreleme -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <form method="GET" action="/blog">
+              <div class="row">
+                <div class="col-md-4">
+                  <input type="text" class="form-control" name="search"
+                         placeholder="Post ara..." value="{{query.search}}">
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control" name="category">
+                    <option value="">Tüm Kategoriler</option>
+                    {{#each categories}}
+                    <option value="{{this._id}}" {{#if (eq ../query.category this._id)}}selected{{/if}}>
+                      {{this.name}}
+                    </option>
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control" name="sort">
+                    <option value="newest" {{#if (eq query.sort "newest")}}selected{{/if}}>En Yeni</option>
+                    <option value="oldest" {{#if (eq query.sort "oldest")}}selected{{/if}}>En Eski</option>
+                    <option value="views" {{#if (eq query.sort "views")}}selected{{/if}}>En Popüler</option>
+                    <option value="title" {{#if (eq query.sort "title")}}selected{{/if}}>Başlık A-Z</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-search"></i> Ara
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <main id="main" class="col-md-8">
+        {{#if sessionFlash.message}}
+          <div class="{{sessionFlash.type}}">
+            {{sessionFlash.message}}
+          </div>
+        {{/if}}
+
+        <!-- Sonuç Bilgisi -->
+        {{#if pagination.totalItems}}
+        <div class="mb-3">
+          <p class="text-muted">
+            {{pagination.startItem}}-{{pagination.endItem}} / {{pagination.totalItems}} post gösteriliyor
+            {{#if query.search}}
+              <strong>"{{query.search}}"</strong> için
+            {{/if}}
+            {{#if currentCategory}}
+              <strong>{{currentCategory.name}}</strong> kategorisinde
+            {{/if}}
+          </p>
+        </div>
+        {{/if}}
+        <div class="row">
+          {{#if posts}}
+            {{#each posts}}
+            <div class="col-md-6 mb-4">
+              <div class="blog">
+                <div class="blog-img">
+                  <img src="{{post_image}}" class="img-fluid" alt="{{title}}"
+                       style="height: 200px; object-fit: cover; width: 100%;" />
+                </div>
+                <div class="blog-content">
+                  <ul class="blog-meta">
+                    <li>
+                      <i class="fas fa-user"></i>
+                      <span class="writer">{{author.username}}</span>
+                    </li>
+                    <li>
+                      <i class="fas fa-clock"></i>
+                      <span class="writer">{{generateDate createdAt "MMM DD YYYY"}}</span>
+                    </li>
+                    <li>
+                      <i class="fas fa-eye"></i>
+                      <span class="writer">{{views}}</span>
+                    </li>
+                  </ul>
+                  <div class="mb-2">
+                    <span class="badge badge-primary" style="background-color: {{category.color}}">
+                      {{category.name}}
+                    </span>
+                  </div>
+                  <h3>{{truncateText title 60}}</h3>
+                  <p>{{#if summary}}{{summary}}{{else}}{{truncateText content 150}}{{/if}}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <a href="/posts/{{_id}}" class="btn btn-primary btn-sm">Devamını Oku</a>
+                    <small class="text-muted">{{readingTime content}} dk okuma</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{/each}}
+          {{else}}
+            <div class="col-12">
+              <div class="text-center py-5">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">Post bulunamadı</h4>
+                <p class="text-muted">
+                  {{#if query.search}}
+                    "<strong>{{query.search}}</strong>" için sonuç bulunamadı.
+                  {{else if currentCategory}}
+                    <strong>{{currentCategory.name}}</strong> kategorisinde post bulunmuyor.
+                  {{else}}
+                    Henüz hiç post yayınlanmamış.
+                  {{/if}}
+                </p>
+                <a href="/blog" class="btn btn-primary">Tüm Postları Görüntüle</a>
+              </div>
+            </div>
+          {{/if}}
+          <!-- Sayfalama -->
+          {{#if pagination.totalPages}}
+          {{#if (gt pagination.totalPages 1)}}
+          <nav aria-label="Blog pagination">
+            <ul class="pagination justify-content-center">
+              {{#if pagination.hasPrevPage}}
+              <li class="page-item">
+                <a class="page-link" href="?page={{pagination.prevPage}}&search={{query.search}}&category={{query.category}}&sort={{query.sort}}">
+                  <i class="fas fa-chevron-left"></i> Önceki
+                </a>
+              </li>
+              {{/if}}
+
+              {{#each pagination.pages}}
+              <li class="page-item {{#if this.isCurrent}}active{{/if}}">
+                <a class="page-link" href="?page={{this.number}}&search={{../query.search}}&category={{../query.category}}&sort={{../query.sort}}">
+                  {{this.number}}
+                </a>
+              </li>
+              {{/each}}
+
+              {{#if pagination.hasNextPage}}
+              <li class="page-item">
+                <a class="page-link" href="?page={{pagination.nextPage}}&search={{query.search}}&category={{query.category}}&sort={{query.sort}}">
+                  Sonraki <i class="fas fa-chevron-right"></i>
+                </a>
+              </li>
+              {{/if}}
+            </ul>
+          </nav>
+          {{/if}}
+          {{/if}}
+        </div>
+      </main>
+
+      <aside id="aside" class="col-md-4">
+
+        <!-- Hızlı Arama -->
+        <div class="widget">
+          <h3 class="mb-3">Hızlı Arama</h3>
+          <div class="widget-search">
+            <form method="GET" action="/blog">
+              <div class="input-group">
+                <input class="form-control" type="text" name="search"
+                       placeholder="Post ara..." value="{{query.search}}">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- /Search -->
+
+        <!-- Category -->
+        {{>site-sidebar categories=categories}}
+        <!-- /Category -->
+
+        <!-- Son Postlar -->
+        {{#if recentPosts}}
+        <div class="widget">
+          <h3 class="mb-3">Son Postlar</h3>
+          {{#each recentPosts}}
+          <div class="widget-post mb-3">
+            <div class="d-flex">
+              <img src="{{this.post_image}}" alt="{{this.title}}"
+                   style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;" />
+              <div class="ml-3 flex-grow-1">
+                <h6 class="mb-1">
+                  <a href="/posts/{{this._id}}" class="text-dark">
+                    {{truncateText this.title 40}}
+                  </a>
+                </h6>
+                <small class="text-muted">
+                  <i class="fas fa-clock"></i> {{generateDate this.createdAt "DD/MM/YYYY"}}
+                </small>
+                <br>
+                <small>
+                  <span class="badge badge-sm badge-primary">{{this.category.name}}</span>
+                </small>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+        {{/if}}
+        <!-- /Son Postlar -->
+
+        <!-- Popüler Postlar -->
+        {{#if popularPosts}}
+        <div class="widget">
+          <h3 class="mb-3">Popüler Postlar</h3>
+          {{#each popularPosts}}
+          <div class="widget-post mb-3">
+            <div class="d-flex">
+              <img src="{{this.post_image}}" alt="{{this.title}}"
+                   style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;" />
+              <div class="ml-3 flex-grow-1">
+                <h6 class="mb-1">
+                  <a href="/posts/{{this._id}}" class="text-dark">
+                    {{truncateText this.title 40}}
+                  </a>
+                </h6>
+                <small class="text-muted">
+                  <i class="fas fa-eye"></i> {{this.views}} görüntülenme
+                </small>
+                <br>
+                <small>
+                  <span class="badge badge-sm badge-primary">{{this.category.name}}</span>
+                </small>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+        {{/if}}
+        <!-- /Popüler Postlar -->
+
+      </aside>
+
+    </div>
+
+  </div>
+</section>
