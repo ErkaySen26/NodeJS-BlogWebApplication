@@ -20,20 +20,23 @@ const {
 const expressSession = require("express-session");
 const connectMongo = require("connect-mongo");
 const app = express();
-const port = 3000;
-const hostname = "127.0.0.1";
+const port = process.env.PORT || 3000;
+const hostname =
+  process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1";
 
-mongoose.connect("mongodb://127.0.0.1/nodeblog_db");
+// MongoDB bağlantısı - production'da MongoDB Atlas, development'da local
+const mongoUrl = process.env.MONGODB_URI || "mongodb://127.0.0.1/nodeblog_db";
+mongoose.connect(mongoUrl);
 
 // Statik dosyalar
 const MongoStore = require("connect-mongo");
 app.use(
   expressSession({
-    secret: "testotesto",
+    secret: process.env.SESSION_SECRET || "testotesto",
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      mongoUrl: "mongodb://127.0.0.1/nodeblog_db",
+      mongoUrl: mongoUrl,
     }),
   })
 );
@@ -109,6 +112,10 @@ app.use("/", main);
 app.use("/posts", post);
 app.use("/users", users);
 app.use("/admin", admin);
-app.listen(port, hostname, () => {
-  console.log(`Server  Çalışıyor, http://${hostname}:${port}/`);
+app.listen(port, () => {
+  console.log(`Server çalışıyor, Port: ${port}`);
+  console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log(
+    `MongoDB: ${mongoUrl.includes("mongodb.net") ? "Atlas" : "Local"}`
+  );
 });

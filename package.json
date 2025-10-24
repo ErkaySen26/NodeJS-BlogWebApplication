@@ -4,10 +4,19 @@
   "description": "Node Blog Application",
   "main": "app.js",
   "scripts": {
-    "boot": "nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "boot": "nodemon app.js",
+    "build": "echo 'Build completed'",
+    "seed": "node seedData.js",
+    "seed:prod": "node seedProduction.js"
   },
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "dependencies": {
     "body-parser": "^2.2.0",
     "connect-mongo": "^5.1.0",
